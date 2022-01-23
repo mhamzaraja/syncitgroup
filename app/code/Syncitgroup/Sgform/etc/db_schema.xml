@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table comment="syncitgroup_sgform_formdata Table" engine="innodb" name="syncitgroup_sgform_formdata" resource="default">
+		<column comment="Entity Id" identity="true" name="formdata_id" nullable="false" padding="6" unsigned="true" xsi:type="smallint"/>
+		<constraint referenceId="PRIMARY" xsi:type="primary">
+			<column name="formdata_id"/>
+		</constraint>
+		<column name="name" nullable="true" xsi:type="text"/>
+		<column name="age" nullable="true" xsi:type="text"/>
+		<column name="sex" nullable="true" xsi:type="text"/>
+		<column name="message" nullable="true" xsi:type="text"/>
+		<column name="email" nullable="true" xsi:type="text"/>
+		<column name="ip_address" nullable="true" xsi:type="text"/>
+	</table>
+</schema>

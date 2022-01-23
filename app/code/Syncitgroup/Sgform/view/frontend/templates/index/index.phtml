@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-md-8">
+        <form name="addData" method="post" id="addData" class="form"
+              action="/syncit-group-form"
+              data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+              data-mage-init='{"validation":{}}'>
+            <fieldset class="fieldset">
+                <legend class="legend"><span><?= $block->escapeHtmlAttr(__('Fill Detail')) ?></span></legend>
+                <fieldset class="fieldset row">
+                    <div class="fields col-md-6">
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                escapeHtmlAttr(__('Name')) ?></span></label>
+                            <div class="control">
+                                <input name="name" id="name" title="Name" value="" class="input-text" type="text"
+                                       data-validate="{required:true, 'validate-alphanum-with-spaces':true}">
+                            </div>
+                        </div>
+                        <div class="field email required">
+                            <label class="label" for="email"><span><?php  echo __('Email') ?></span></label>
+                            <div class="control">
+                                <input name="email" id="email" title="<?php  echo __('Email') ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                escapeHtmlAttr(__('Age')) ?></span></label>
+                            <div class="control">
+                                <input name="age" id="age" title="Age" value="" class="input-text" type="text"data-validate="{required:true, 'validate-alphanum-with-spaces':true}">
+                            </div>
+                        </div>
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                escapeHtmlAttr(__('Sex')) ?></span></label>
+                            <div class="control">
+                                <select name="sex" id="sex" title="Sex" value="" class="input-text"
+                                       data-validate="{required:true, 'validate-alphanum-with-spaces':true}">
+								    <option value="male">Male</option>
+								    <option value="female">Female</option>
+								    <option value="other">Other</option>
+								  </select>
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                escapeHtmlAttr(__('Message')) ?></span></label>
+                            <div class="control">
+                                <textarea name="message" placeholder="Enter Message here" id="message" title="Message" value="" class="input-text" type="text"data-validate="{required:true, 'validate-alphanum-with-spaces':true}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </fieldset>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action submit primary" title="Save"><span><?= $block->
+                        escapeHtmlAttr(__('Save')) ?></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

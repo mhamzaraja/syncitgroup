@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Syncitgroup\Sgform\Api\FormdataRepositoryInterface" type="Syncitgroup\Sgform\Model\FormdataRepository"/>
+	<preference for="Syncitgroup\Sgform\Api\Data\FormdataInterface" type="Syncitgroup\Sgform\Model\Data\Formdata"/>
+	<preference for="Syncitgroup\Sgform\Api\Data\FormdataSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Syncitgroup\Sgform\Model\ResourceModel\Formdata\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">syncitgroup_sgform_formdata</argument>
+			<argument name="resourceModel" xsi:type="string">Syncitgroup\Sgform\Model\ResourceModel\Formdata\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="syncitgroup_sgform_formdata_listing_data_source" xsi:type="string">Syncitgroup\Sgform\Model\ResourceModel\Formdata\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

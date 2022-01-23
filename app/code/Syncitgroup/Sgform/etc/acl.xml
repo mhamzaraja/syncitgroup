@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Syncitgroup_Sgform::formdata" sortOrder="10" title="formdata">
+					<resource id="Syncitgroup_Sgform::formdata_save" sortOrder="10" title="Save formdata"/>
+					<resource id="Syncitgroup_Sgform::formdata_delete" sortOrder="20" title="Delete formdata"/>
+					<resource id="Syncitgroup_Sgform::formdata_update" sortOrder="30" title="Update formdata"/>
+					<resource id="Syncitgroup_Sgform::formdata_view" sortOrder="40" title="View formdata"/>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>
