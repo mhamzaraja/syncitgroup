@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -22,6 +23,9 @@ class Index extends Action
     protected $resultPageFactory;
     protected $_formdata;
     protected $resultFactory;
+    protected $eventManager;
+
+
     protected $_transportBuilder;
     protected $inlineTranslation;
     protected $scopeConfig;
@@ -40,6 +44,7 @@ class Index extends Action
         Formdata  $formdata,
         PageFactory $resultPageFactory,
         ResultFactory $resultFactory,
+        EventManager $eventManager,
         TransportBuilder $transportBuilder,
         StateInterface $inlineTranslation,
         ScopeConfigInterface $scopeConfig,
@@ -51,6 +56,7 @@ class Index extends Action
         $this->resultPageFactory = $resultPageFactory;
         $this->_formdata = $formdata;
         $this->resultFactory = $resultFactory;
+        $this->eventManager = $eventManager;
         $this->_transportBuilder = $transportBuilder;
         $this->inlineTranslation = $inlineTranslation;
         $this->scopeConfig = $scopeConfig;
@@ -97,13 +103,13 @@ class Index extends Action
 
             $sender = [
                 'name' => $this->_escaper->escapeHtml($post['name']),
-                'email' => $post['email'],
+                'email' => "mhamzak3@gmail.com",
             ];
 
             $transport = $this->_transportBuilder->setTemplateIdentifier('send_email_custom_template')
             ->setTemplateOptions(
                 [
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND, // this is using frontend area to get the template file
                     'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
                 ]
             )
@@ -120,9 +126,12 @@ class Index extends Action
 
             $saveData = $model->save();
             if($saveData){
+                $this->eventManager->dispatch('syncit_group_form', ['email' => $post['email']]);
                 $this->messageManager->addSuccess( __('Thank you for submitting to Syncit Group custom form!') );
             }
         }
+
+        
         return $this->resultPageFactory->create();
     }
 
