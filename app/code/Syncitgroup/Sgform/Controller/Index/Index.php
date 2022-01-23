@@ -8,6 +8,12 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\Translate\Inline\StateInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Escaper;
+use Magento\Framework\ObjectManagerInterface as Objectmanager;
 
 
 class Index extends Action
@@ -16,8 +22,12 @@ class Index extends Action
     protected $resultPageFactory;
     protected $_formdata;
     protected $resultFactory;
+    protected $_transportBuilder;
+    protected $inlineTranslation;
+    protected $scopeConfig;
+    protected $storeManager;
+    protected $_escaper;
     protected $objectManager;
-
 
     /**
      * Index constructor.
@@ -30,15 +40,23 @@ class Index extends Action
         Formdata  $formdata,
         PageFactory $resultPageFactory,
         ResultFactory $resultFactory,
+        TransportBuilder $transportBuilder,
+        StateInterface $inlineTranslation,
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager,
+        Escaper $escaper,
         Objectmanager $objectmanager
-        
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->_formdata = $formdata;
         $this->resultFactory = $resultFactory;
+        $this->_transportBuilder = $transportBuilder;
+        $this->inlineTranslation = $inlineTranslation;
+        $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
+        $this->_escaper = $escaper;
         $this->objectManager = $objectmanager;
-        
     }
 
     /**
@@ -67,6 +85,34 @@ class Index extends Action
                 "email" => $post['email'],
                 "ip_address" => $ip_address
                 ];
+
+            $storeEmail = $this->scopeConfig->getValue('trans_email/ident_sales/email',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+            $storeName = $this->scopeConfig ->getValue('trans_email/ident_general/name',\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+
+            $postObject = new \Magento\Framework\DataObject();
+            $postObject->setData($post);
+            $error = false;
+
+            $sender = [
+                'name' => $this->_escaper->escapeHtml($post['name']),
+                'email' => $post['email'],
+            ];
+
+            $transport = $this->_transportBuilder->setTemplateIdentifier('send_email_custom_template')
+            ->setTemplateOptions(
+                [
+                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                    'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
+                ]
+            )
+                ->setTemplateVars($formData)
+                ->setFrom($sender)
+                ->addTo($storeEmail,$storeName)
+                ->getTransport();
+            $transport->sendMessage();
+            $this->inlineTranslation->resume();
             
             $model = $this->objectManager->create(Formdata::class);
 
